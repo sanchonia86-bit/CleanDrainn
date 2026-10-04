@@ -1,0 +1,3045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CleanDrain | Community-Based Clogged Drainage Reporting System</title>
+
+<style>
+:root{
+  --primary:#087f5b;
+  --primary-dark:#056044;
+  --secondary:#1677c8;
+  --secondary-dark:#0d5da1;
+  --light-green:#e9f8f2;
+  --light-blue:#eaf4fc;
+  --bg:#f4f7f9;
+  --white:#fff;
+  --text:#18323b;
+  --muted:#6d7d84;
+  --border:#dce6ea;
+  --danger:#d64545;
+  --warning:#d99000;
+  --success:#16865b;
+  --shadow:0 8px 25px rgba(24,50,59,.08);
+  --radius:18px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+
+.navbar{
+  max-width:1400px;
+  margin:auto;
+  height:72px;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:800;
+  font-size:21px;
+  color:var(--primary-dark);
+  white-space:nowrap;
+}
+
+.logo{
+  width:43px;
+  height:43px;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:grid;
+  place-items:center;
+  color:white;
+  font-size:22px;
+  box-shadow:0 5px 14px rgba(8,127,91,.2);
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.nav-links button{
+  border:0;
+  background:transparent;
+  padding:10px 13px;
+  border-radius:10px;
+  color:#52666d;
+  transition:.2s;
+}
+
+.nav-links button:hover,
+.nav-links button.active{
+  background:var(--light-green);
+  color:var(--primary-dark);
+}
+
+.user-area{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.role-select{
+  border:1px solid var(--border);
+  background:white;
+  border-radius:10px;
+  padding:9px 10px;
+  color:var(--text);
+}
+
+.notification-btn{
+  position:relative;
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:12px;
+  font-size:19px;
+}
+
+.notification-count{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:20px;
+  background:var(--danger);
+  color:white;
+  font-size:11px;
+  display:grid;
+  place-items:center;
+  font-weight:bold;
+}
+
+.mobile-menu{
+  display:none;
+}
+
+/* MAIN */
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:28px 24px 60px;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.hero{
+  background:linear-gradient(135deg,#e9f8f2 0%,#edf7ff 100%);
+  border:1px solid #d9ece6;
+  border-radius:28px;
+  padding:45px;
+  margin-bottom:25px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after{
+  content:"💧";
+  position:absolute;
+  right:45px;
+  bottom:-35px;
+  font-size:170px;
+  opacity:.08;
+}
+
+.hero h1{
+  font-size:clamp(30px,5vw,52px);
+  line-height:1.1;
+  max-width:750px;
+  margin-bottom:15px;
+  color:#124c43;
+}
+
+.hero p{
+  max-width:730px;
+  color:#587078;
+  font-size:17px;
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:11px 17px;
+  font-weight:700;
+  transition:.2s;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 5px 13px rgba(0,0,0,.09);
+}
+
+.btn-primary{
+  color:white;
+  background:var(--primary);
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+}
+
+.btn-blue{
+  color:white;
+  background:var(--secondary);
+}
+
+.btn-blue:hover{
+  background:var(--secondary-dark);
+}
+
+.btn-light{
+  color:var(--text);
+  background:white;
+  border:1px solid var(--border);
+}
+
+.btn-danger{
+  color:white;
+  background:var(--danger);
+}
+
+.btn-warning{
+  color:#4d3900;
+  background:#ffd76a;
+}
+
+.section-title{
+  margin:28px 0 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.section-title h2{
+  font-size:24px;
+}
+
+.section-title p{
+  color:var(--muted);
+}
+
+/* CARDS */
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.stat{
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.stat-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+}
+
+.stat-icon.green{background:var(--light-green)}
+.stat-icon.blue{background:var(--light-blue)}
+.stat-icon.yellow{background:#fff6da}
+.stat-icon.red{background:#ffeded}
+
+.stat-number{
+  font-size:27px;
+  font-weight:800;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* FORMS */
+.form-card{
+  padding:25px;
+  max-width:950px;
+  margin:auto;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:17px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+label{
+  font-size:14px;
+  font-weight:700;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:12px 13px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+  transition:.2s;
+}
+
+input:focus,textarea:focus,select:focus{
+  border-color:var(--secondary);
+  box-shadow:0 0 0 3px rgba(22,119,200,.09);
+}
+
+textarea{
+  min-height:125px;
+  resize:vertical;
+}
+
+.required{
+  color:var(--danger);
+}
+
+.form-help{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.photo-upload{
+  border:2px dashed #b8d4dc;
+  border-radius:14px;
+  padding:22px;
+  text-align:center;
+  background:#fafdfe;
+  transition:.2s;
+}
+
+.photo-upload:hover{
+  border-color:var(--secondary);
+  background:#f4fbff;
+}
+
+.photo-upload input{
+  border:0;
+  padding:0;
+  margin-top:10px;
+}
+
+.preview-container{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+
+.preview{
+  position:relative;
+}
+
+.preview img{
+  width:125px;
+  height:90px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid var(--border);
+}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:20px;
+}
+
+/* REPORTS */
+.toolbar{
+  padding:15px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.toolbar input{
+  max-width:300px;
+}
+
+.report-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.report-card{
+  overflow:hidden;
+  transition:.2s;
+}
+
+.report-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(24,50,59,.12);
+}
+
+.report-photo{
+  height:190px;
+  background:#e9f1f3;
+  position:relative;
+  overflow:hidden;
+}
+
+.report-photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.no-photo{
+  height:100%;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.report-body{
+  padding:18px;
+}
+
+.report-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.report-id{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.report-title{
+  font-size:19px;
+  font-weight:800;
+}
+
+.report-location{
+  color:#536970;
+  margin:5px 0 12px;
+}
+
+.report-description{
+  color:#50656d;
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.status-received{
+  background:#e9f1ff;
+  color:#245b9e;
+}
+
+.status-inspection{
+  background:#fff3cf;
+  color:#936500;
+}
+
+.status-progress{
+  background:#e6f6ef;
+  color:#08734e;
+}
+
+.status-resolved{
+  background:#dff7e8;
+  color:#11753f;
+}
+
+.severity-low{
+  background:#e8f7ee;
+  color:#26734a;
+}
+
+.severity-medium{
+  background:#fff4d8;
+  color:#926500;
+}
+
+.severity-high{
+  background:#ffe8e8;
+  color:#b63232;
+}
+
+.ai-box{
+  margin:12px 0;
+  padding:12px;
+  border-radius:11px;
+  background:#f0f7ff;
+  border:1px solid #d5e8f8;
+  font-size:13px;
+}
+
+.card-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:15px;
+}
+
+/* DETAILS */
+.details-layout{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:20px;
+}
+
+.detail-card{
+  padding:22px;
+}
+
+.detail-photo{
+  width:100%;
+  height:320px;
+  border-radius:15px;
+  object-fit:cover;
+  background:#edf2f3;
+}
+
+.detail-info{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.info-item{
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#fafcfd;
+}
+
+.info-item small{
+  color:var(--muted);
+  display:block;
+  margin-bottom:3px;
+}
+
+.info-item strong{
+  font-size:14px;
+}
+
+.timeline{
+  position:relative;
+  margin-top:20px;
+  padding-left:25px;
+}
+
+.timeline:before{
+  content:"";
+  position:absolute;
+  left:7px;
+  top:5px;
+  bottom:5px;
+  width:2px;
+  background:#d9e7e9;
+}
+
+.timeline-item{
+  position:relative;
+  padding:0 0 22px 15px;
+}
+
+.timeline-dot{
+  position:absolute;
+  left:-24px;
+  top:3px;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--secondary);
+  border:3px solid white;
+  box-shadow:0 0 0 1px #b8d4dc;
+}
+
+.timeline-item h4{
+  font-size:14px;
+}
+
+.timeline-item p{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.progress-photo{
+  width:100px;
+  height:75px;
+  object-fit:cover;
+  border-radius:9px;
+  margin-top:8px;
+}
+
+/* NOTIFICATIONS */
+.notification-panel{
+  position:fixed;
+  right:20px;
+  top:82px;
+  width:min(390px,calc(100vw - 30px));
+  max-height:75vh;
+  overflow:auto;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:17px;
+  box-shadow:0 20px 50px rgba(0,0,0,.17);
+  z-index:2000;
+  display:none;
+}
+
+.notification-panel.open{
+  display:block;
+}
+
+.notification-header{
+  padding:16px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+}
+
+.notification{
+  padding:14px 16px;
+  border-bottom:1px solid #edf1f2;
+}
+
+.notification.unread{
+  background:#f0f8ff;
+}
+
+.notification strong{
+  font-size:13px;
+}
+
+.notification p{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.notification time{
+  font-size:10px;
+  color:#8a989d;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(11,30,36,.58);
+  z-index:3000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-box{
+  background:white;
+  width:min(700px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:20px;
+  box-shadow:0 20px 70px rgba(0,0,0,.2);
+}
+
+.modal-header{
+  padding:18px 21px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-header button{
+  border:0;
+  background:#f1f4f5;
+  width:35px;
+  height:35px;
+  border-radius:10px;
+}
+
+.modal-body{
+  padding:21px;
+}
+
+/* AI */
+.ai-summary{
+  padding:18px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#eef8f4,#edf6ff);
+  border:1px solid #d7e9e7;
+  margin-top:18px;
+}
+
+.ai-summary h3{
+  color:#17644f;
+  margin-bottom:8px;
+}
+
+/* LOGIN */
+.login-wrap{
+  min-height:calc(100vh - 72px);
+  display:grid;
+  place-items:center;
+  padding:30px 15px;
+}
+
+.login-card{
+  width:min(500px,100%);
+  padding:30px;
+}
+
+.login-logo{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.login-logo .logo{
+  margin:auto;
+  width:60px;
+  height:60px;
+  font-size:30px;
+}
+
+.demo-users{
+  margin-top:18px;
+  padding:13px;
+  border-radius:11px;
+  background:#f5f8f9;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ADMIN */
+.settings-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.settings-card{
+  padding:20px;
+}
+
+.account-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 0;
+  border-bottom:1px solid #edf1f2;
+  gap:10px;
+}
+
+/* EMPTY */
+.empty{
+  padding:45px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.empty-icon{
+  font-size:45px;
+  margin-bottom:10px;
+}
+
+/* TOAST */
+.toast-container{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:5000;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.toast{
+  min-width:280px;
+  max-width:380px;
+  background:#17343c;
+  color:white;
+  padding:13px 15px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  animation:toastIn .25s ease;
+  font-size:13px;
+}
+
+.toast.success{
+  border-left:4px solid #35c58d;
+}
+
+.toast.info{
+  border-left:4px solid #55aef5;
+}
+
+.toast.warning{
+  border-left:4px solid #ffd35c;
+}
+
+@keyframes toastIn{
+  from{transform:translateY(15px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .nav-links{
+    display:none;
+  }
+
+  .mobile-menu{
+    display:block;
+    border:0;
+    background:white;
+    font-size:22px;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .details-layout{
+    grid-template-columns:1fr;
+  }
+
+  .settings-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:700px){
+  main{
+    padding:18px 13px 40px;
+  }
+
+  .navbar{
+    padding:0 13px;
+  }
+
+  .brand span{
+    display:none;
+  }
+
+  .role-select{
+    max-width:145px;
+    font-size:12px;
+  }
+
+  .hero{
+    padding:28px 21px;
+  }
+
+  .hero h1{
+    font-size:34px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .report-grid{
+    grid-template-columns:1fr;
+  }
+
+  .detail-info{
+    grid-template-columns:1fr;
+  }
+
+  .toolbar{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .toolbar input,
+  .toolbar select{
+    max-width:none;
+  }
+}
+
+@media(max-width:450px){
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .user-area{
+    gap:4px;
+  }
+
+  .notification-btn{
+    width:38px;
+    height:38px;
+  }
+
+  .role-select{
+    max-width:120px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="navbar">
+    <div class="brand">
+      <div class="logo">💧</div>
+      <span>CleanDrain</span>
+    </div>
+
+    <nav class="nav-links" id="desktopNav">
+      <button class="active" onclick="showPage('home')">Home</button>
+      <button onclick="showPage('reports')">Reports</button>
+      <button id="submitNav" onclick="showPage('submit')">Report Drainage</button>
+      <button id="dashboardNav" onclick="showPage('dashboard')">Dashboard</button>
+      <button id="adminNav" onclick="showPage('admin')">Administration</button>
+    </nav>
+
+    <div class="user-area">
+      <select class="role-select" id="roleSelect" onchange="switchRole(this.value)">
+        <option value="resident">👤 Resident</option>
+        <option value="personnel">🛡️ Barangay Personnel</option>
+        <option value="admin">⚙️ Developer / Admin</option>
+      </select>
+
+      <button class="notification-btn" onclick="toggleNotifications()" title="Notifications">
+        🔔
+        <span class="notification-count" id="notificationCount">0</span>
+      </button>
+
+      <button class="mobile-menu" onclick="toggleMobileNav()">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="notification-panel" id="notificationPanel">
+  <div class="notification-header">
+    <strong>Notifications</strong>
+    <button class="btn btn-light" style="padding:5px 9px" onclick="markNotificationsRead()">Mark read</button>
+  </div>
+  <div id="notificationList"></div>
+</div>
+
+<main>
+
+<!-- HOME -->
+<section class="page active" id="homePage">
+
+  <div class="hero">
+    <h1>Report clogged drainage. Help keep your community safe.</h1>
+    <p>
+      CleanDrain connects residents with authorized barangay personnel so drainage
+      problems can be reported, monitored, updated, and resolved transparently.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('submit')">
+        💧 Report a Clogged Drain
+      </button>
+      <button class="btn btn-light" onclick="showPage('reports')">
+        📋 View My Reports
+      </button>
+    </div>
+  </div>
+
+  <div class="stats" id="homeStats"></div>
+
+  <div class="section-title">
+    <div>
+      <h2>How CleanDrain Works</h2>
+      <p>A simple community reporting process.</p>
+    </div>
+  </div>
+
+  <div class="report-grid">
+    <div class="card" style="padding:22px">
+      <div class="stat-icon blue">📷</div>
+      <h3 style="margin-top:13px">1. Submit Evidence</h3>
+      <p style="color:var(--muted);font-size:14px">
+        Provide the location, description, contact information, and photo evidence.
+      </p>
+    </div>
+
+    <div class="card" style="padding:22px">
+      <div class="stat-icon green">🤖</div>
+      <h3 style="margin-top:13px">2. AI Assistance</h3>
+      <p style="color:var(--muted);font-size:14px">
+        The prototype categorizes the drainage problem and suggests a severity level.
+      </p>
+    </div>
+
+    <div class="card" style="padding:22px">
+      <div class="stat-icon yellow">🛡️</div>
+      <h3 style="margin-top:13px">3. Barangay Review</h3>
+      <p style="color:var(--muted);font-size:14px">
+        Authorized personnel inspect the report and update its progress.
+      </p>
+    </div>
+
+    <div class="card" style="padding:22px">
+      <div class="stat-icon green">✅</div>
+      <h3 style="margin-top:13px">4. Track Resolution</h3>
+      <p style="color:var(--muted);font-size:14px">
+        Residents can monitor updates, photos, and the current report status.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SUBMIT -->
+<section class="page" id="submitPage">
+  <div class="section-title">
+    <div>
+      <h2>Report a Clogged Drainage</h2>
+      <p>Give the barangay enough information to understand the problem.</p>
+    </div>
+  </div>
+
+  <div class="card form-card">
+    <form id="reportForm">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Resident Name <span class="required">*</span></label>
+          <input id="residentName" type="text" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Contact Email <span class="required">*</span></label>
+          <input id="residentEmail" type="email" placeholder="example@email.com" required>
+        </div>
+
+        <div class="form-group full">
+          <label>Reported Location <span class="required">*</span></label>
+          <input id="reportLocation" type="text"
+                 placeholder="Barangay, street, landmark or specific location"
+                 required>
+        </div>
+
+        <div class="form-group">
+          <label>Problem Type</label>
+          <select id="problemType">
+            <option value="auto">Let CleanDrain categorize</option>
+            <option value="debris">Debris blockage</option>
+            <option value="mud">Mud / silt blockage</option>
+            <option value="water">Water buildup</option>
+            <option value="severe">Severe blockage</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Approximate Severity</label>
+          <select id="severity">
+            <option value="auto">AI-assisted assessment</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
+          <label>Description of the Problem <span class="required">*</span></label>
+          <textarea id="reportDescription"
+                    placeholder="Describe what you observed. For example: water is not flowing, plastic and leaves are blocking the drain, mud has accumulated, etc."
+                    required></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label>Photo Evidence <span class="required">*</span></label>
+
+          <div class="photo-upload">
+            <div style="font-size:34px">📸</div>
+            <strong>Attach a photo of the clogged drainage</strong>
+            <div class="form-help">
+              You may select one or more JPG, PNG or WEBP images.
+            </div>
+            <input id="reportPhotos" type="file" accept="image/*" multiple required>
+            <div class="preview-container" id="reportPhotoPreview"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ai-box">
+        🤖 <strong>AI-Assisted Categorization</strong>
+        <p style="margin-top:4px;color:var(--muted)">
+          CleanDrain will analyze the report text to suggest a problem category and
+          priority. This suggestion does not replace the final decision of authorized
+          barangay personnel.
+        </p>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-light" onclick="resetReportForm()">Clear</button>
+        <button type="submit" class="btn btn-primary">🚨 Submit Report</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section class="page" id="reportsPage">
+  <div class="section-title">
+    <div>
+      <h2>My Drainage Reports</h2>
+      <p>Track your submitted reports and the latest barangay updates.</p>
+    </div>
+    <button class="btn btn-primary" onclick="showPage('submit')">＋ New Report</button>
+  </div>
+
+  <div class="card toolbar">
+    <input id="residentSearch" type="search" placeholder="🔎 Search location or description..." oninput="renderReports()">
+    <select id="residentStatusFilter" onchange="renderReports()">
+      <option value="all">All statuses</option>
+      <option value="Received">Received</option>
+      <option value="For Inspection">For Inspection</option>
+      <option value="Action in Progress">Action in Progress</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+  </div>
+
+  <div class="report-grid" id="residentReports"></div>
+</section>
+
+<!-- BARANGAY DASHBOARD -->
+<section class="page" id="dashboardPage">
+  <div class="section-title">
+    <div>
+      <h2>Barangay Personnel Dashboard</h2>
+      <p>Review community drainage reports and manage their progress.</p>
+    </div>
+    <span class="badge status-progress">🛡️ Authorized Personnel</span>
+  </div>
+
+  <div class="stats" id="dashboardStats"></div>
+
+  <div class="card toolbar" style="margin-top:20px">
+    <input id="personnelSearch" type="search"
+           placeholder="🔎 Search resident, location or report ID..."
+           oninput="renderPersonnelReports()">
+
+    <select id="personnelStatusFilter" onchange="renderPersonnelReports()">
+      <option value="all">All statuses</option>
+      <option value="Received">Received</option>
+      <option value="For Inspection">For Inspection</option>
+      <option value="Action in Progress">Action in Progress</option>
+      <option value="Resolved">Resolved</option>
+    </select>
+
+    <select id="personnelSeverityFilter" onchange="renderPersonnelReports()">
+      <option value="all">All priority levels</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <div class="report-grid" id="personnelReports"></div>
+</section>
+
+<!-- ADMIN -->
+<section class="page" id="adminPage">
+  <div class="section-title">
+    <div>
+      <h2>Developer / System Administration</h2>
+      <p>Manage authorized accounts and prototype system settings.</p>
+    </div>
+    <span class="badge status-progress">⚙️ Administrator</span>
+  </div>
+
+  <div class="settings-grid">
+
+    <div class="card settings-card">
+      <h3>👥 Authorized Accounts</h3>
+      <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+        Prototype account management.
+      </p>
+
+      <div class="account-row">
+        <div>
+          <strong>Barangay Personnel</strong>
+          <small style="display:block;color:var(--muted)">Authorized</small>
+        </div>
+        <span class="badge status-progress">Active</span>
+      </div>
+
+      <div class="account-row">
+        <div>
+          <strong>System Administrator</strong>
+          <small style="display:block;color:var(--muted)">Full access</small>
+        </div>
+        <span class="badge status-progress">Active</span>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:15px;width:100%"
+              onclick="showToast('Account-management prototype opened.','info')">
+        ＋ Manage Accounts
+      </button>
+    </div>
+
+    <div class="card settings-card">
+      <h3>🔔 Notification Settings</h3>
+      <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+        Simulated notifications used by this prototype.
+      </p>
+
+      <label style="display:flex;justify-content:space-between;align-items:center;margin:13px 0">
+        In-app notifications
+        <input id="settingInApp" type="checkbox" checked style="width:auto">
+      </label>
+
+      <label style="display:flex;justify-content:space-between;align-items:center;margin:13px 0">
+        Simulated email
+        <input id="settingEmail" type="checkbox" checked style="width:auto">
+      </label>
+
+      <button class="btn btn-blue" style="width:100%;margin-top:8px"
+              onclick="showToast('Notification settings saved.','success')">
+        Save Settings
+      </button>
+    </div>
+
+    <div class="card settings-card">
+      <h3>🤖 AI Assistance</h3>
+      <p style="color:var(--muted);font-size:13px;margin:6px 0 14px">
+        AI is limited to categorization and prioritization.
+      </p>
+
+      <div class="ai-box">
+        <strong>Current mode: Assisted</strong>
+        <p style="margin-top:5px">
+          Personnel always retain final authority over report classification,
+          inspection, action and resolution.
+        </p>
+      </div>
+
+      <button class="btn btn-light" style="width:100%"
+              onclick="showToast('AI settings are currently in assisted mode.','info')">
+        Review AI Settings
+      </button>
+    </div>
+
+  </div>
+
+  <div class="card" style="padding:22px;margin-top:20px">
+    <h3>System Activity</h3>
+    <div id="activityLog" style="margin-top:10px"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- UPDATE MODAL -->
+<div class="modal" id="updateModal">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <strong>Update Situation</strong>
+      <button onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div id="updateReportSummary" style="margin-bottom:17px"></div>
+
+      <div class="form-group">
+        <label>Update Status <span class="required">*</span></label>
+        <select id="updateStatus">
+          <option value="Received">Received</option>
+          <option value="For Inspection">For Inspection</option>
+          <option value="Action in Progress">Action in Progress</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-top:15px">
+        <label>Situation Update / Notes <span class="required">*</span></label>
+        <textarea id="situationNote"
+                  placeholder="Example: Inspection conducted. Drain was found blocked by plastic waste and soil. Cleaning team scheduled."></textarea>
+      </div>
+
+      <div class="form-group" style="margin-top:15px">
+        <label>Progress Photo</label>
+        <input id="progressPhoto" type="file" accept="image/*">
+        <div class="preview-container" id="progressPreview"></div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-light" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSituationUpdate()">💾 Save Update</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- REPORT DETAILS MODAL -->
+<div class="modal" id="detailsModal">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <strong>Report Details</strong>
+      <button onclick="closeDetails()">✕</button>
+    </div>
+
+    <div class="modal-body" id="detailsContent"></div>
+
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ============================================================
+   CLEAN DRAIN
+   Single-file interactive prototype
+   ============================================================ */
+
+/* ---------- APPLICATION STATE ---------- */
+
+const STORAGE_KEY = "cleandrain_prototype_v1";
+
+let state = {
+  role: "resident",
+  reports: [],
+  notifications: [],
+  activity: [],
+  nextReportNumber: 1001
+};
+
+let selectedReportId = null;
+
+
+/* ---------- DEMO DATA ---------- */
+
+const demoReports = [
+  {
+    id:"CD-1001",
+    residentName:"Maria Santos",
+    email:"maria@example.com",
+    location:"Barangay San Isidro, Main Street",
+    description:"The drainage is full of leaves, plastic bottles and other debris. Water is starting to collect beside the road.",
+    category:"Debris blockage",
+    severity:"medium",
+    status:"For Inspection",
+    createdAt:"2026-10-02T09:35:00",
+    photos:[],
+    updates:[
+      {
+        status:"Received",
+        note:"Report received by the barangay. Initial review is scheduled.",
+        date:"2026-10-02T09:35:00",
+        photo:null
+      },
+      {
+        status:"For Inspection",
+        note:"Barangay personnel will inspect the reported location.",
+        date:"2026-10-02T14:20:00",
+        photo:null
+      }
+    ]
+  },
+  {
+    id:"CD-1002",
+    residentName:"Juan Dela Cruz",
+    email:"juan@example.com",
+    location:"Barangay Malinis, Riverside Road",
+    description:"Heavy rain caused water to build up because the canal appears to be severely blocked with mud and garbage.",
+    category:"Severe blockage",
+    severity:"high",
+    status:"Action in Progress",
+    createdAt:"2026-10-01T16:10:00",
+    photos:[],
+    updates:[
+      {
+        status:"Received",
+        note:"Report received and queued for inspection.",
+        date:"2026-10-01T16:10:00",
+        photo:null
+      },
+      {
+        status:"For Inspection",
+        note:"Inspection confirmed substantial blockage in the canal.",
+        date:"2026-10-02T08:30:00",
+        photo:null
+      },
+      {
+        status:"Action in Progress",
+        note:"Cleaning team has started clearing accumulated mud and waste.",
+        date:"2026-10-02T13:45:00",
+        photo:null
+      }
+    ]
+  }
+];
+
+
+/* ---------- INITIALIZATION ---------- */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  loadState();
+
+  setupPhotoPreview("reportPhotos","reportPhotoPreview");
+  setupPhotoPreview("progressPhoto","progressPreview");
+
+  document.getElementById("reportForm")
+    .addEventListener("submit", submitReport);
+
+  renderAll();
+
+});
+
+
+function loadState(){
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if(saved){
+
+    try{
+      const parsed = JSON.parse(saved);
+
+      state = {
+        ...state,
+        ...parsed
+      };
+
+    }catch(error){
+      console.warn("Could not load saved state.");
+    }
+
+  }
+
+  if(!state.reports.length){
+    state.reports = demoReports;
+  }
+
+  state.reports.forEach(report => {
+
+    if(!report.updates){
+      report.updates = [];
+    }
+
+    if(!report.photos){
+      report.photos = [];
+    }
+
+  });
+
+  saveState();
+}
+
+
+function saveState(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+}
+
+
+/* ---------- ROLE MANAGEMENT ---------- */
+
+function switchRole(role){
+
+  state.role = role;
+
+  saveState();
+
+  updateNavigation();
+
+  if(role === "resident"){
+    showPage("home");
+    showToast("Resident mode enabled.","info");
+  }
+
+  if(role === "personnel"){
+    showPage("dashboard");
+    showToast("Barangay Personnel mode enabled.","success");
+  }
+
+  if(role === "admin"){
+    showPage("admin");
+    showToast("Administrator mode enabled.","success");
+  }
+
+  renderAll();
+}
+
+
+function updateNavigation(){
+
+  const role = state.role;
+
+  document.getElementById("submitNav").style.display =
+    role === "resident" ? "" : "none";
+
+  document.getElementById("dashboardNav").style.display =
+    role === "resident" ? "none" : "";
+
+  document.getElementById("adminNav").style.display =
+    role === "admin" ? "" : "none";
+
+  document.getElementById("roleSelect").value = role;
+}
+
+
+/* ---------- PAGE NAVIGATION ---------- */
+
+function showPage(page){
+
+  if(page === "submit" && state.role !== "resident"){
+    showToast("Only residents can submit a community report.","warning");
+    return;
+  }
+
+  if(page === "dashboard" &&
+     state.role !== "personnel" &&
+     state.role !== "admin"){
+    showToast("Barangay personnel authorization is required.","warning");
+    return;
+  }
+
+  if(page === "admin" && state.role !== "admin"){
+    showToast("Administrator authorization is required.","warning");
+    return;
+  }
+
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.remove("active");
+  });
+
+  const target = document.getElementById(page + "Page");
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-links button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  renderAll();
+}
+
+
+function toggleMobileNav(){
+
+  const nav = document.getElementById("desktopNav");
+
+  if(nav.style.display === "flex"){
+    nav.style.display = "";
+  }else{
+    nav.style.display = "flex";
+    nav.style.position = "absolute";
+    nav.style.top = "72px";
+    nav.style.left = "0";
+    nav.style.right = "0";
+    nav.style.padding = "10px";
+    nav.style.background = "white";
+    nav.style.flexDirection = "column";
+    nav.style.borderBottom = "1px solid var(--border)";
+  }
+}
+
+
+/* ---------- PHOTO HANDLING ---------- */
+
+function setupPhotoPreview(inputId,previewId){
+
+  const input = document.getElementById(inputId);
+
+  if(!input) return;
+
+  input.addEventListener("change",function(){
+
+    const container = document.getElementById(previewId);
+
+    container.innerHTML = "";
+
+    [...this.files].forEach(file => {
+
+      if(!file.type.startsWith("image/")) return;
+
+      const reader = new FileReader();
+
+      reader.onload = e => {
+
+        const wrapper = document.createElement("div");
+
+        wrapper.className = "preview";
+
+        const img = document.createElement("img");
+
+        img.src = e.target.result;
+
+        wrapper.appendChild(img);
+
+        container.appendChild(wrapper);
+
+      };
+
+      reader.readAsDataURL(file);
+
+    });
+
+  });
+}
+
+
+/* ---------- AI ASSISTANCE ---------- */
+
+function analyzeReport(description){
+
+  const text = description.toLowerCase();
+
+  let category = "Debris blockage";
+  let severity = "low";
+
+  if(
+    text.includes("mud") ||
+    text.includes("silt") ||
+    text.includes("soil") ||
+    text.includes("sediment")
+  ){
+    category = "Mud / silt blockage";
+    severity = "medium";
+  }
+
+  if(
+    text.includes("water") ||
+    text.includes("flood") ||
+    text.includes("standing") ||
+    text.includes("water buildup") ||
+    text.includes("overflow")
+  ){
+    category = "Water buildup";
+    severity = "medium";
+  }
+
+  if(
+    text.includes("severe") ||
+    text.includes("completely blocked") ||
+    text.includes("danger") ||
+    text.includes("flooding") ||
+    text.includes("deep water") ||
+    text.includes("major")
+  ){
+    category = "Severe blockage";
+    severity = "high";
+  }
+
+  if(
+    text.includes("plastic") ||
+    text.includes("garbage") ||
+    text.includes("trash") ||
+    text.includes("leaves") ||
+    text.includes("debris") ||
+    text.includes("waste")
+  ){
+    category = category === "Severe blockage"
+      ? "Severe blockage"
+      : "Debris blockage";
+  }
+
+  return {
+    category,
+    severity
+  };
+}
+
+
+/* ---------- SUBMIT REPORT ---------- */
+
+async function submitReport(event){
+
+  event.preventDefault();
+
+  if(state.role !== "resident"){
+    showToast("Only residents can submit reports.","warning");
+    return;
+  }
+
+  const name =
+    document.getElementById("residentName").value.trim();
+
+  const email =
+    document.getElementById("residentEmail").value.trim();
+
+  const location =
+    document.getElementById("reportLocation").value.trim();
+
+  const description =
+    document.getElementById("reportDescription").value.trim();
+
+  const problemType =
+    document.getElementById("problemType").value;
+
+  const severityChoice =
+    document.getElementById("severity").value;
+
+  const photoInput =
+    document.getElementById("reportPhotos");
+
+  if(!name || !email || !location || !description){
+
+    showToast("Please complete all required fields.","warning");
+
+    return;
+  }
+
+  if(!photoInput.files.length){
+
+    showToast("Please attach at least one photo.","warning");
+
+    return;
+  }
+
+  if(!validateEmail(email)){
+
+    showToast("Please enter a valid email address.","warning");
+
+    return;
+  }
+
+  const ai = analyzeReport(description);
+
+  const category =
+    problemType === "auto"
+      ? ai.category
+      : getCategoryName(problemType);
+
+  const severity =
+    severityChoice === "auto"
+      ? ai.severity
+      : severityChoice;
+
+  const photos =
+    await filesToDataURLs(photoInput.files);
+
+  const now = new Date().toISOString();
+
+  const report = {
+
+    id:"CD-" + state.nextReportNumber++,
+
+    residentName:name,
+
+    email:email,
+
+    location:location,
+
+    description:description,
+
+    category:category,
+
+    severity:severity,
+
+    status:"Received",
+
+    createdAt:now,
+
+    photos:photos,
+
+    updates:[
+      {
+        status:"Received",
+        note:"Report submitted successfully. The barangay has been notified for review.",
+        date:now,
+        photo:null
+      }
+    ]
+
+  };
+
+  state.reports.unshift(report);
+
+  addNotification(
+    "Barangay notification",
+    `New drainage report ${report.id} was submitted by ${name}.`,
+    "barangay"
+  );
+
+  addNotification(
+    "Report submitted",
+    `Your report ${report.id} has been received by the barangay.`,
+    "resident"
+  );
+
+  addActivity(
+    `New report ${report.id} submitted by ${name}.`
+  );
+
+  saveState();
+
+  resetReportForm();
+
+  showToast(
+    `Report ${report.id} submitted successfully.`,
+    "success"
+  );
+
+  setTimeout(() => {
+    showPage("reports");
+  },300);
+
+}
+
+
+/* ---------- FILE TO DATA URL ---------- */
+
+function filesToDataURLs(files){
+
+  const promises = [...files].map(file => {
+
+    return new Promise(resolve => {
+
+      const reader = new FileReader();
+
+      reader.onload = () => resolve(reader.result);
+
+      reader.onerror = () => resolve(null);
+
+      reader.readAsDataURL(file);
+
+    });
+
+  });
+
+  return Promise.all(promises);
+}
+
+
+/* ---------- CATEGORY HELPERS ---------- */
+
+function getCategoryName(value){
+
+  const categories = {
+
+    debris:"Debris blockage",
+
+    mud:"Mud / silt blockage",
+
+    water:"Water buildup",
+
+    severe:"Severe blockage"
+
+  };
+
+  return categories[value] || "Debris blockage";
+}
+
+
+/* ---------- RENDER ALL ---------- */
+
+function renderAll(){
+
+  updateNavigation();
+
+  renderHomeStats();
+
+  renderReports();
+
+  renderPersonnelStats();
+
+  renderPersonnelReports();
+
+  renderNotifications();
+
+  renderActivity();
+
+}
+
+
+/* ---------- HOME STATS ---------- */
+
+function renderHomeStats(){
+
+  const reports = state.reports;
+
+  const total = reports.length;
+
+  const active =
+    reports.filter(r =>
+      r.status !== "Resolved"
+    ).length;
+
+  const resolved =
+    reports.filter(r =>
+      r.status === "Resolved"
+    ).length;
+
+  const high =
+    reports.filter(r =>
+      r.severity === "high"
+    ).length;
+
+  document.getElementById("homeStats").innerHTML = `
+
+    ${statHTML("📋",total,"Total Reports","blue")}
+
+    ${statHTML("🔄",active,"Active Reports","yellow")}
+
+    ${statHTML("✅",resolved,"Resolved","green")}
+
+    ${statHTML("🚨",high,"High Priority","red")}
+
+  `;
+}
+
+
+function statHTML(icon,number,label,color){
+
+  return `
+    <div class="card stat">
+      <div class="stat-icon ${color}">${icon}</div>
+      <div>
+        <div class="stat-number">${number}</div>
+        <div class="stat-label">${label}</div>
+      </div>
+    </div>
+  `;
+}
+
+
+/* ---------- RESIDENT REPORTS ---------- */
+
+function renderReports(){
+
+  const container =
+    document.getElementById("residentReports");
+
+  if(!container) return;
+
+  const search =
+    (document.getElementById("residentSearch")?.value || "")
+      .toLowerCase();
+
+  const status =
+    document.getElementById("residentStatusFilter")?.value || "all";
+
+  let reports =
+    state.reports.filter(report => {
+
+      const matchesSearch =
+        report.location.toLowerCase().includes(search) ||
+        report.description.toLowerCase().includes(search) ||
+        report.id.toLowerCase().includes(search);
+
+      const matchesStatus =
+        status === "all" ||
+        report.status === status;
+
+      return matchesSearch && matchesStatus;
+
+    });
+
+  if(!reports.length){
+
+    container.innerHTML = emptyHTML(
+      "📋",
+      "No reports found",
+      "Submit a drainage report to start tracking an issue."
+    );
+
+    return;
+  }
+
+  container.innerHTML =
+    reports.map(reportCardHTML).join("");
+
+}
+
+
+/* ---------- PERSONNEL STATS ---------- */
+
+function renderPersonnelStats(){
+
+  const container =
+    document.getElementById("dashboardStats");
+
+  if(!container) return;
+
+  const reports = state.reports;
+
+  container.innerHTML = `
+
+    ${statHTML(
+      "📥",
+      reports.filter(r=>r.status==="Received").length,
+      "Received",
+      "blue"
+    )}
+
+    ${statHTML(
+      "🔎",
+      reports.filter(r=>r.status==="For Inspection").length,
+      "For Inspection",
+      "yellow"
+    )}
+
+    ${statHTML(
+      "🛠️",
+      reports.filter(r=>r.status==="Action in Progress").length,
+      "Action in Progress",
+      "green"
+    )}
+
+    ${statHTML(
+      "✅",
+      reports.filter(r=>r.status==="Resolved").length,
+      "Resolved",
+      "green"
+    )}
+
+  `;
+}
+
+
+/* ---------- PERSONNEL REPORTS ---------- */
+
+function renderPersonnelReports(){
+
+  const container =
+    document.getElementById("personnelReports");
+
+  if(!container) return;
+
+  const search =
+    (document.getElementById("personnelSearch")?.value || "")
+      .toLowerCase();
+
+  const status =
+    document.getElementById("personnelStatusFilter")?.value || "all";
+
+  const severity =
+    document.getElementById("personnelSeverityFilter")?.value || "all";
+
+  let reports =
+    state.reports.filter(report => {
+
+      const combined =
+        `${report.id} ${report.residentName} ${report.location}`
+          .toLowerCase();
+
+      return (
+        combined.includes(search) &&
+        (status==="all" || report.status===status) &&
+        (severity==="all" || report.severity===severity)
+      );
+
+    });
+
+  if(!reports.length){
+
+    container.innerHTML = emptyHTML(
+      "📋",
+      "No reports found",
+      "No submitted reports match the selected filters."
+    );
+
+    return;
+  }
+
+  container.innerHTML =
+    reports.map(reportCardHTML).join("");
+
+}
+
+
+/* ---------- REPORT CARD ---------- */
+
+function reportCardHTML(report){
+
+  const latestUpdate =
+    report.updates && report.updates.length
+      ? report.updates[report.updates.length-1]
+      : null;
+
+  const photo =
+    report.photos && report.photos.length
+      ? `
+        <img src="${report.photos[0]}"
+             alt="Drainage evidence">
+      `
+      : `
+        <div class="no-photo">
+          📷 No photo evidence
+        </div>
+      `;
+
+  const personnelControls =
+    state.role === "personnel" ||
+    state.role === "admin";
+
+  return `
+
+    <article class="card report-card">
+
+      <div class="report-photo">
+        ${photo}
+
+        <div style="position:absolute;top:12px;left:12px">
+          <span class="badge ${statusClass(report.status)}">
+            ${statusIcon(report.status)} ${escapeHTML(report.status)}
+          </span>
+        </div>
+      </div>
+
+      <div class="report-body">
+
+        <div class="report-head">
+
+          <div>
+            <div class="report-id">${escapeHTML(report.id)}</div>
+            <div class="report-title">
+              ${escapeHTML(report.category)}
+            </div>
+          </div>
+
+          <span class="badge ${severityClass(report.severity)}">
+            ${severityIcon(report.severity)}
+            ${capitalize(report.severity)} priority
+          </span>
+
+        </div>
+
+        <div class="report-location">
+          📍 ${escapeHTML(report.location)}
+        </div>
+
+        ${
+          state.role !== "resident"
+            ? `
+              <div style="font-size:13px;margin-bottom:8px">
+                👤 <strong>${escapeHTML(report.residentName)}</strong>
+                <br>
+                ✉️ ${escapeHTML(report.email)}
+              </div>
+            `
+            : ""
+        }
+
+        <div class="report-description">
+          ${escapeHTML(report.description)}
+        </div>
+
+        <div class="badges">
+          <span class="badge status-progress">
+            🤖 AI: ${escapeHTML(report.category)}
+          </span>
+
+          <span class="badge" style="background:#f1f4f5;color:#53656c">
+            🕐 ${formatDate(report.createdAt)}
+          </span>
+        </div>
+
+        ${
+          latestUpdate
+            ? `
+              <div class="ai-box">
+                <strong>Latest situation</strong>
+                <p>${escapeHTML(latestUpdate.note)}</p>
+              </div>
+            `
+            : ""
+        }
+
+        <div class="card-actions">
+
+          <button class="btn btn-light"
+                  onclick="viewReport('${report.id}')">
+            👁 View Details
+          </button>
+
+          ${
+            personnelControls
+              ? `
+                <button class="btn btn-primary"
+                        onclick="openUpdateModal('${report.id}')">
+                  🛠 Update Situation
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+}
+
+
+/* ---------- REPORT DETAILS ---------- */
+
+function viewReport(id){
+
+  const report =
+    state.reports.find(r => r.id === id);
+
+  if(!report) return;
+
+  const photos =
+    report.photos && report.photos.length
+      ? `
+        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:10px">
+          ${report.photos.map(photo =>
+            `<img src="${photo}"
+                  style="width:130px;height:90px;object-fit:cover;border-radius:10px">`
+          ).join("")}
+        </div>
+      `
+      : `<p style="color:var(--muted)">No photo evidence.</p>`;
+
+  const updates =
+    report.updates && report.updates.length
+      ? report.updates.map(update => `
+
+          <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <h4>
+              ${statusIcon(update.status)}
+              ${escapeHTML(update.status)}
+            </h4>
+
+            <p>${escapeHTML(update.note)}</p>
+
+            <p>
+              ${formatDate(update.date)}
+            </p>
+
+            ${
+              update.photo
+                ? `<img class="progress-photo"
+                        src="${update.photo}"
+                        alt="Progress photo">`
+                : ""
+            }
+
+          </div>
+
+        `).join("")
+      : `<p style="color:var(--muted)">No updates yet.</p>`;
+
+  document.getElementById("detailsContent").innerHTML = `
+
+    <div class="details-layout">
+
+      <div>
+
+        <span class="badge ${statusClass(report.status)}">
+          ${statusIcon(report.status)}
+          ${escapeHTML(report.status)}
+        </span>
+
+        <h2 style="margin-top:10px">
+          ${escapeHTML(report.category)}
+        </h2>
+
+        <p style="color:var(--muted)">
+          Report ${escapeHTML(report.id)}
+        </p>
+
+        <div class="detail-info">
+
+          ${infoHTML("Resident",report.residentName)}
+
+          ${infoHTML("Contact Email",report.email)}
+
+          ${infoHTML("Location",report.location)}
+
+          ${infoHTML("AI Category",report.category)}
+
+          ${infoHTML("Priority",capitalize(report.severity))}
+
+          ${infoHTML("Submitted",formatDate(report.createdAt))}
+
+        </div>
+
+        <div style="margin-top:18px">
+
+          <strong>Description</strong>
+
+          <p style="color:var(--muted);margin-top:6px">
+            ${escapeHTML(report.description)}
+          </p>
+
+        </div>
+
+        <div style="margin-top:18px">
+
+          <strong>Photo Evidence</strong>
+
+          ${photos}
+
+        </div>
+
+      </div>
+
+      <div class="detail-card" style="background:#fafdfe">
+
+        <h3>Situation Timeline</h3>
+
+        <div class="timeline">
+          ${updates}
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById("detailsModal")
+    .classList.add("open");
+
+}
+
+
+function infoHTML(label,value){
+
+  return `
+    <div class="info-item">
+      <small>${escapeHTML(label)}</small>
+      <strong>${escapeHTML(value)}</strong>
+    </div>
+  `;
+
+}
+
+
+/* ---------- UPDATE MODAL ---------- */
+
+function openUpdateModal(id){
+
+  if(
+    state.role !== "personnel" &&
+    state.role !== "admin"
+  ){
+    showToast(
+      "Only authorized barangay personnel or administrators can update reports.",
+      "warning"
+    );
+    return;
+  }
+
+  const report =
+    state.reports.find(r => r.id === id);
+
+  if(!report) return;
+
+  selectedReportId = id;
+
+  document.getElementById("updateStatus").value =
+    report.status;
+
+  document.getElementById("situationNote").value = "";
+
+  document.getElementById("progressPhoto").value = "";
+
+  document.getElementById("progressPreview").innerHTML = "";
+
+  document.getElementById("updateReportSummary").innerHTML = `
+
+    <div class="ai-box">
+
+      <strong>${escapeHTML(report.id)}</strong>
+
+      <p>
+        ${escapeHTML(report.residentName)}
+        · ${escapeHTML(report.location)}
+      </p>
+
+      <div style="margin-top:8px">
+        Current status:
+        <span class="badge ${statusClass(report.status)}">
+          ${escapeHTML(report.status)}
+        </span>
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById("updateModal")
+    .classList.add("open");
+
+}
+
+
+/* ---------- SAVE SITUATION ---------- */
+
+async function saveSituationUpdate(){
+
+  if(
+    state.role !== "personnel" &&
+    state.role !== "admin"
+  ){
+    showToast("Authorization required.","warning");
+    return;
+  }
+
+  const report =
+    state.reports.find(r =>
+      r.id === selectedReportId
+    );
+
+  if(!report) return;
+
+  const status =
+    document.getElementById("updateStatus").value;
+
+  const note =
+    document.getElementById("situationNote").value.trim();
+
+  const photoInput =
+    document.getElementById("progressPhoto");
+
+  if(!note){
+
+    showToast(
+      "Please enter a situation update.",
+      "warning"
+    );
+
+    return;
+  }
+
+  let photo = null;
+
+  if(photoInput.files.length){
+
+    const photos =
+      await filesToDataURLs(photoInput.files);
+
+    photo = photos[0];
+
+  }
+
+  const oldStatus = report.status;
+
+  const now = new Date().toISOString();
+
+  report.status = status;
+
+  report.updates.push({
+
+    status:status,
+
+    note:note,
+
+    date:now,
+
+    photo:photo
+
+  });
+
+  addActivity(
+    `${report.id} updated from "${oldStatus}" to "${status}".`
+  );
+
+  /* Resident notification */
+  addNotification(
+    "Report status updated",
+    `${report.id} is now "${status}". ${note}`,
+    "resident"
+  );
+
+  /* Simulated barangay notification */
+  addNotification(
+    "System update",
+    `Personnel updated ${report.id}.`,
+    "barangay"
+  );
+
+  saveState();
+
+  closeModal();
+
+  showToast(
+    `Report ${report.id} updated successfully.`,
+    "success"
+  );
+
+  renderAll();
+
+}
+
+
+/* ---------- NOTIFICATIONS ---------- */
+
+function addNotification(title,message,audience){
+
+  const emailEnabled =
+    document.getElementById("settingEmail")?.checked !== false;
+
+  const inAppEnabled =
+    document.getElementById("settingInApp")?.checked !== false;
+
+  if(!inAppEnabled) return;
+
+  state.notifications.unshift({
+
+    id:Date.now() + Math.random(),
+
+    title:title,
+
+    message:message,
+
+    audience:audience,
+
+    read:false,
+
+    date:new Date().toISOString(),
+
+    simulatedEmail:emailEnabled
+
+  });
+
+  state.notifications =
+    state.notifications.slice(0,50);
+
+  saveState();
+
+}
+
+
+function renderNotifications(){
+
+  const list =
+    document.getElementById("notificationList");
+
+  if(!list) return;
+
+  let notifications =
+    state.notifications.filter(n => {
+
+      if(state.role === "resident"){
+        return n.audience === "resident";
+      }
+
+      return (
+        n.audience === "barangay" ||
+        n.audience === "resident"
+      );
+
+    });
+
+  if(!notifications.length){
+
+    list.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔔</div>
+        No notifications yet.
+      </div>
+    `;
+
+  }else{
+
+    list.innerHTML =
+      notifications.map(n => `
+
+        <div class="notification ${n.read ? "" : "unread"}">
+
+          <strong>${escapeHTML(n.title)}</strong>
+
+          <p>${escapeHTML(n.message)}</p>
+
+          <time>
+            ${formatDate(n.date)}
+            ${n.simulatedEmail ? " · ✉️ Email simulated" : ""}
+          </time>
+
+        </div>
+
+      `).join("");
+
+  }
+
+  const unread =
+    notifications.filter(n => !n.read).length;
+
+  const count =
+    document.getElementById("notificationCount");
+
+  count.textContent = unread;
+
+  count.style.display =
+    unread ? "grid" : "none";
+
+}
+
+
+function toggleNotifications(){
+
+  document
+    .getElementById("notificationPanel")
+    .classList.toggle("open");
+
+  renderNotifications();
+
+}
+
+
+function markNotificationsRead(){
+
+  state.notifications.forEach(n => {
+
+    if(
+      state.role === "resident"
+        ? n.audience === "resident"
+        : true
+    ){
+      n.read = true;
+    }
+
+  });
+
+  saveState();
+
+  renderNotifications();
+
+}
+
+
+/* ---------- ACTIVITY ---------- */
+
+function addActivity(message){
+
+  state.activity.unshift({
+
+    message:message,
+
+    date:new Date().toISOString()
+
+  });
+
+  state.activity =
+    state.activity.slice(0,30);
+
+  saveState();
+
+}
+
+
+function renderActivity(){
+
+  const container =
+    document.getElementById("activityLog");
+
+  if(!container) return;
+
+  if(!state.activity.length){
+
+    container.innerHTML =
+      `<p style="color:var(--muted)">No recent system activity.</p>`;
+
+    return;
+  }
+
+  container.innerHTML =
+    state.activity.map(item => `
+
+      <div style="
+        padding:11px 0;
+        border-bottom:1px solid #edf1f2;
+        font-size:13px;
+      ">
+
+        <strong>•</strong>
+        ${escapeHTML(item.message)}
+
+        <small style="
+          display:block;
+          color:var(--muted);
+          margin-top:3px;
+        ">
+          ${formatDate(item.date)}
+        </small>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* ---------- FORM RESET ---------- */
+
+function resetReportForm(){
+
+  const form =
+    document.getElementById("reportForm");
+
+  form.reset();
+
+  document.getElementById("reportPhotoPreview")
+    .innerHTML = "";
+
+}
+
+
+/* ---------- MODALS ---------- */
+
+function closeModal(){
+
+  document
+    .getElementById("updateModal")
+    .classList.remove("open");
+
+  selectedReportId = null;
+
+}
+
+
+function closeDetails(){
+
+  document
+    .getElementById("detailsModal")
+    .classList.remove("open");
+
+}
+
+
+/* ---------- TOAST ---------- */
+
+function showToast(message,type="info"){
+
+  const container =
+    document.getElementById("toastContainer");
+
+  const toast =
+    document.createElement("div");
+
+  toast.className =
+    `toast ${type}`;
+
+  toast.textContent = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+
+    setTimeout(() => toast.remove(),250);
+
+  },3500);
+
+}
+
+
+/* ---------- VALIDATION ---------- */
+
+function validateEmail(email){
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+}
+
+
+/* ---------- STATUS HELPERS ---------- */
+
+function statusClass(status){
+
+  if(status === "Received")
+    return "status-received";
+
+  if(status === "For Inspection")
+    return "status-inspection";
+
+  if(status === "Action in Progress")
+    return "status-progress";
+
+  if(status === "Resolved")
+    return "status-resolved";
+
+  return "status-received";
+
+}
+
+
+function statusIcon(status){
+
+  if(status === "Received")
+    return "📥";
+
+  if(status === "For Inspection")
+    return "🔎";
+
+  if(status === "Action in Progress")
+    return "🛠️";
+
+  if(status === "Resolved")
+    return "✅";
+
+  return "📋";
+
+}
+
+
+function severityClass(severity){
+
+  if(severity === "high")
+    return "severity-high";
+
+  if(severity === "medium")
+    return "severity-medium";
+
+  return "severity-low";
+
+}
+
+
+function severityIcon(severity){
+
+  if(severity === "high")
+    return "🚨";
+
+  if(severity === "medium")
+    return "⚠️";
+
+  return "🟢";
+
+}
+
+
+/* ---------- UTILITIES ---------- */
+
+function formatDate(date){
+
+  return new Date(date).toLocaleString(
+    "en-PH",
+    {
+      year:"numeric",
+      month:"short",
+      day:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+function capitalize(value){
+
+  return String(value)
+    .charAt(0)
+    .toUpperCase() +
+    String(value).slice(1);
+
+}
+
+
+function emptyHTML(icon,title,message){
+
+  return `
+
+    <div class="card empty"
+         style="grid-column:1/-1">
+
+      <div class="empty-icon">${icon}</div>
+
+      <h3>${title}</h3>
+
+      <p>${message}</p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* Prevent HTML injection when rendering user-entered data */
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ---------- CLOSE MODALS ON BACKDROP ---------- */
+
+document.getElementById("updateModal")
+  .addEventListener("click",function(e){
+
+    if(e.target === this){
+      closeModal();
+    }
+
+  });
+
+document.getElementById("detailsModal")
+  .addEventListener("click",function(e){
+
+    if(e.target === this){
+      closeDetails();
+    }
+
+  });
+
+
+/* ---------- DEMO PERSONNEL ACCOUNT PROTECTION ---------- */
+
+/*
+  In this prototype, role switching simulates authentication.
+
+  Resident:
+    - Can submit reports
+    - Can view reports
+    - Cannot update status
+    - Cannot add situation updates
+
+  Barangay Personnel:
+    - Can view all reports
+    - Can update situations
+    - Can upload progress photos
+    - Can change report status
+
+  Administrator:
+    - Can view reports
+    - Can update situations
+    - Can change status
+    - Can access system administration
+
+  A real deployment must enforce these permissions on a server/backend
+  because client-side JavaScript cannot provide real security.
+*/
+
+
+/* ---------- INITIAL UI ---------- */
+
+updateNavigation();
+
+</script>
+
+</body>
+</html>
